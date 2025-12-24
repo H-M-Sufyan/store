@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_instance/get_instance.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:store/constants/colors.dart';
@@ -17,7 +18,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController email = TextEditingController();
   final TextEditingController password = TextEditingController();
-  final LoginController loginController = LoginController();
+  final ObscuredController obscuredController = Get.put(ObscuredController());
+  final AuthController authController = Get.put(AuthController());
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       SizedBox(height: Get.height * 0.02),
                       TextField(
                         controller: password,
-                        obscureText: loginController.is_obscured.value,
+                        obscureText: obscuredController.is_obscured.value,
                         style: TextStyle(fontSize: 16),
                         decoration: InputDecoration(
                           labelText: "Password",
@@ -72,10 +74,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           prefixIcon: Icon(Icons.lock),
                           suffixIcon: IconButton(
                             onPressed: () {
-                              loginController.toogleObscure();
+                              obscuredController.toogleObscure();
                             },
                             icon: Icon(
-                              loginController.is_obscured.value
+                              obscuredController.is_obscured.value
                                   ? Icons.visibility
                                   : Icons.visibility_off,
                             ),
@@ -109,10 +111,24 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
 
                       SizedBox(height: Get.height * 0.04),
-                      IconButton(
-                        onPressed: () {},
-                        icon: FaIcon(FontAwesomeIcons.google, size: 50),
-                      ),
+                      Obx(() {
+                        return Container(
+                          child: authController.isLoading.value
+                              ? CircularProgressIndicator(
+                                  color: Colors.black,
+                                  strokeWidth: 2,
+                                )
+                              : IconButton(
+                                  onPressed: () async {
+                                    await authController.googleLogin();
+                                  },
+                                  icon: FaIcon(
+                                    FontAwesomeIcons.google,
+                                    size: 50,
+                                  ),
+                                ),
+                        );
+                      }),
                     ],
                   );
                 }),

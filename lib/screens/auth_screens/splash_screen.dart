@@ -5,6 +5,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:lottie/lottie.dart';
 import 'package:store/constants/colors.dart';
+import 'package:store/screens/auth_screens/login_screen.dart';
 import 'package:store/screens/user_screens/Home_Screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -19,7 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Timer(Duration(seconds: 4), () {
-      Get.offAll(HomeScreen());
+      Get.offAll(LoginScreen());
     });
   }
 
