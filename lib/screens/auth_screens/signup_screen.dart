@@ -5,16 +5,16 @@ import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:store/constants/colors.dart';
 import 'package:store/controllers/auth_controller.dart';
-import 'package:store/screens/auth_screens/signup_screen.dart';
+import 'package:store/screens/auth_screens/login_screen.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignupScreen> createState() => _SignupScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController email = TextEditingController();
   final TextEditingController password = TextEditingController();
   final LoginController loginController = LoginController();
@@ -22,6 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.all(21.0),
         child: Center(
@@ -29,13 +30,13 @@ class _LoginScreenState extends State<LoginScreen> {
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(height: Get.height * 0.2),
+              SizedBox(height: Get.height * 0.1),
               Expanded(
                 child: Obx(() {
                   return Column(
                     children: [
                       Text(
-                        "Welcome Back To Sufyan's Store",
+                        "Welcome To Sufyan's Store",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 40,
@@ -44,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       SizedBox(height: Get.height * 0.02),
                       Text(
-                        "Please Enter Login Details to Login",
+                        "Please Enter Details to SignUp",
                         style: TextStyle(
                           fontSize: 20,
                           color: AppColors.TextBColor,
@@ -99,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         child: const Text(
-                          "SignIn",
+                          "SignUp",
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -107,36 +108,20 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
-
-                      SizedBox(height: Get.height * 0.04),
-                      IconButton(
-                        onPressed: () {},
-                        icon: FaIcon(FontAwesomeIcons.google, size: 50),
-                      ),
                     ],
                   );
                 }),
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  TextButton(
-                    onPressed: () {},
-                    child: Text(
-                      "Forgot Password",
-                      style: TextStyle(
-                        color: AppColors.PrimColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
+                  Text("Have An Account?", style: TextStyle(fontSize: 16),),
                   TextButton(
                     onPressed: () {
-                      Get.to(SignupScreen());
+                      Get.off(LoginScreen());
                     },
                     child: Text(
-                      "SignUp",
+                      "SignIn",
                       style: TextStyle(
                         color: AppColors.PrimColor,
                         fontWeight: FontWeight.bold,
