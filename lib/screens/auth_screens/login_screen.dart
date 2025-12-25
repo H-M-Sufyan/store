@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_instance/get_instance.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/get.dart';
 import 'package:store/constants/colors.dart';
 import 'package:store/controllers/auth_controller.dart';
 import 'package:store/screens/auth_screens/signup_screen.dart';
@@ -18,80 +15,98 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController email = TextEditingController();
   final TextEditingController password = TextEditingController();
+
   final ObscuredController obscuredController = Get.put(ObscuredController());
   final AuthController authController = Get.put(AuthController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(21.0),
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(height: Get.height * 0.2),
-              Expanded(
+      resizeToAvoidBottomInset: true,
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.only(
+                  left: 21,
+                  right: 21,
+                  bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+                ),
                 child: Obx(() {
                   return Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                      SizedBox(height: Get.height * 0.15),
+
                       Text(
                         "Welcome Back To Sufyan's Store",
-                        style: TextStyle(
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 40,
                         ),
-                        textAlign: TextAlign.center,
                       ),
+
                       SizedBox(height: Get.height * 0.02),
+
                       Text(
                         "Please Enter Login Details to Login",
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 20,
                           color: AppColors.TextBColor,
                         ),
                       ),
+
                       SizedBox(height: Get.height * 0.04),
+
                       TextField(
                         controller: email,
-                        style: TextStyle(fontSize: 16),
-                        decoration: InputDecoration(
+                        style: const TextStyle(fontSize: 16),
+                        decoration: const InputDecoration(
                           labelText: "Email",
                           hintText: "Enter Your Email",
                           prefixIcon: Icon(Icons.email),
                           border: OutlineInputBorder(),
                         ),
                       ),
+
                       SizedBox(height: Get.height * 0.02),
+
                       TextField(
                         controller: password,
                         obscureText: obscuredController.is_obscured.value,
-                        style: TextStyle(fontSize: 16),
+                        style: const TextStyle(fontSize: 16),
                         decoration: InputDecoration(
                           labelText: "Password",
                           hintText: "Enter Your Password",
-                          prefixIcon: Icon(Icons.lock),
+                          prefixIcon: const Icon(Icons.lock),
                           suffixIcon: IconButton(
-                            onPressed: () {
-                              obscuredController.toogleObscure();
-                            },
+                            onPressed: obscuredController.toogleObscure,
                             icon: Icon(
                               obscuredController.is_obscured.value
                                   ? Icons.visibility
                                   : Icons.visibility_off,
                             ),
                           ),
-                          border: OutlineInputBorder(),
+                          border: const OutlineInputBorder(),
                         ),
                       ),
+
                       SizedBox(height: Get.height * 0.06),
+
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          authController.LoginWithEmail(
+                            email.text.trim(),
+                            password.text.trim(),
+                          );
+                        },
                         style: ElevatedButton.styleFrom(
                           elevation: 6,
-                          backgroundColor: Colors.deepOrangeAccent[400],
-                          shadowColor: Colors.deepOrangeAccent[400],
+                          backgroundColor: Colors.deepOrangeAccent,
+                          shadowColor: Colors.deepOrangeAccent,
                           padding: const EdgeInsets.symmetric(
                             horizontal: 68,
                             vertical: 16,
@@ -111,29 +126,30 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
 
                       SizedBox(height: Get.height * 0.04),
-                      Obx(() {
-                        return Container(
-                          child: authController.isLoading.value
-                              ? CircularProgressIndicator(
-                                  color: Colors.black,
-                                  strokeWidth: 2,
-                                )
-                              : IconButton(
-                                  onPressed: () async {
-                                    await authController.googleLogin();
-                                  },
-                                  icon: FaIcon(
-                                    FontAwesomeIcons.google,
-                                    size: 50,
-                                  ),
-                                ),
-                        );
-                      }),
+
+                      authController.isLoading.value
+                          ? const CircularProgressIndicator(
+                              color: Colors.black,
+                              strokeWidth: 2,
+                            )
+                          : IconButton(
+                              onPressed: authController.googleLogin,
+                              icon: const FaIcon(
+                                FontAwesomeIcons.google,
+                                size: 50,
+                              ),
+                            ),
+
+                      const SizedBox(height: 20),
                     ],
                   );
                 }),
               ),
-              Row(
+            ),
+
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 21, vertical: 8),
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TextButton(
@@ -149,7 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   TextButton(
                     onPressed: () {
-                      Get.to(SignupScreen());
+                      Get.to(() => SignupScreen());
                     },
                     child: Text(
                       "SignUp",
@@ -162,8 +178,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

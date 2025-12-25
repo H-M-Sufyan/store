@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_instance/get_instance.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/get.dart';
 import 'package:store/constants/colors.dart';
 import 'package:store/controllers/auth_controller.dart';
 import 'package:store/screens/auth_screens/login_screen.dart';
@@ -18,80 +14,99 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController email = TextEditingController();
   final TextEditingController password = TextEditingController();
+
   final ObscuredController obscuredController = Get.put(ObscuredController());
+  final AuthController authController = Get.put(AuthController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(),
-      body: Padding(
-        padding: const EdgeInsets.all(21.0),
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(height: Get.height * 0.1),
-              Expanded(
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.only(
+                  left: 21,
+                  right: 21,
+                  bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+                ),
                 child: Obx(() {
                   return Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                      SizedBox(height: Get.height * 0.1),
+
                       Text(
                         "Welcome To Sufyan's Store",
-                        style: TextStyle(
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 40,
                         ),
-                        textAlign: TextAlign.center,
                       ),
+
                       SizedBox(height: Get.height * 0.02),
+
                       Text(
                         "Please Enter Details to SignUp",
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 20,
                           color: AppColors.TextBColor,
                         ),
                       ),
+
                       SizedBox(height: Get.height * 0.04),
+
                       TextField(
                         controller: email,
-                        style: TextStyle(fontSize: 16),
-                        decoration: InputDecoration(
+                        style: const TextStyle(fontSize: 16),
+                        decoration: const InputDecoration(
                           labelText: "Email",
                           hintText: "Enter Your Email",
                           prefixIcon: Icon(Icons.email),
                           border: OutlineInputBorder(),
                         ),
                       ),
+
                       SizedBox(height: Get.height * 0.02),
+
                       TextField(
                         controller: password,
                         obscureText: obscuredController.is_obscured.value,
-                        style: TextStyle(fontSize: 16),
+                        style: const TextStyle(fontSize: 16),
                         decoration: InputDecoration(
                           labelText: "Password",
                           hintText: "Enter Your Password",
-                          prefixIcon: Icon(Icons.lock),
+                          prefixIcon: const Icon(Icons.lock),
                           suffixIcon: IconButton(
-                            onPressed: () {
-                              obscuredController.toogleObscure();
-                            },
+                            onPressed: obscuredController.toogleObscure,
                             icon: Icon(
                               obscuredController.is_obscured.value
                                   ? Icons.visibility
                                   : Icons.visibility_off,
                             ),
                           ),
-                          border: OutlineInputBorder(),
+                          border: const OutlineInputBorder(),
                         ),
                       ),
+
                       SizedBox(height: Get.height * 0.06),
+
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          authController.registerEmail(
+                            email.text.trim(),
+                            password.text.trim(),
+                          );
+                        },
                         style: ElevatedButton.styleFrom(
                           elevation: 6,
-                          backgroundColor: Colors.deepOrangeAccent[400],
-                          shadowColor: Colors.deepOrangeAccent[400],
+                          backgroundColor: Colors.deepOrangeAccent,
+                          shadowColor: Colors.deepOrangeAccent,
                           padding: const EdgeInsets.symmetric(
                             horizontal: 68,
                             vertical: 16,
@@ -109,17 +124,26 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                         ),
                       ),
+
+                      const SizedBox(height: 20),
                     ],
                   );
                 }),
               ),
-              Row(
+            ),
+
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 21, vertical: 8),
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Have An Account?", style: TextStyle(fontSize: 16),),
+                  const Text(
+                    "Have An Account?",
+                    style: TextStyle(fontSize: 16),
+                  ),
                   TextButton(
                     onPressed: () {
-                      Get.off(LoginScreen());
+                      Get.off(() => LoginScreen());
                     },
                     child: Text(
                       "SignIn",
@@ -132,8 +156,8 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                 ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
