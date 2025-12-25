@@ -6,6 +6,7 @@ import 'package:store/screens/auth_screens/login_screen.dart';
 import 'package:store/screens/auth_screens/signup_screen.dart';
 import 'package:store/screens/auth_screens/splash_screen.dart';
 import 'package:store/screens/user_screens/Home_Screen.dart';
+import 'package:store/screens/user_screens/all_product_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: HomeScreen(),
+      home: AllProductScreen(),
     );
   }
 }
