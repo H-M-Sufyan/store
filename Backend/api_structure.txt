@@ -1,0 +1,15 @@
+PRODUCT
+- name (String)
+- price (Number)
+- image (String)
+- description (String)
+
+ORDER
+- items (Array)
+- total (Number)
+
+ENDPOINTS
+GET  /api/products
+POST /api/products
+GET  /api/orders
+POST /api/orders

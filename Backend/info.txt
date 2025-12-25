@@ -1,0 +1,4 @@
+hmsufyan191_db_user
+pSf2nfyKb5bV7u56
+mongodb+srv://hmsufyan191_db_user:pSf2nfyKb5bV7u56@cluster0.bnkcgds.mongodb.net/
+mongodb+srv://hmsufyan191_db_user:<db_password>@cluster0.bnkcgds.mongodb.net/?appName=Cluster0
