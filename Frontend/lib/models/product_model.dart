@@ -29,13 +29,26 @@ class Product {
       price: (json['price'] as num).toDouble(),
       imageUrl: json['imageUrl'],
       description: json['description'] ?? '',
-
       isFeatured: json['isFeatured'] ?? false,
       isBestSeller: json['isBestSeller'] ?? false,
       isSpecialOffer: json['isSpecialOffer'] ?? false,
-
       rating: (json['rating'] as num).toDouble(),
       soldCount: json['soldCount'] ?? 0,
     );
+  }
+
+  // REQUIRED FOR POST
+  Map<String, dynamic> toJson() {
+    return {
+      "name": name,
+      "price": price,
+      "imageUrl": imageUrl,
+      "description": description,
+      "isFeatured": isFeatured,
+      "isBestSeller": isBestSeller,
+      "isSpecialOffer": isSpecialOffer,
+      "rating": rating,
+      "soldCount": soldCount,
+    };
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import '../constants/api.dart';
 import '../models/product_model.dart';
@@ -55,4 +56,22 @@ class ProductService {
     final List data = jsonDecode(response.body);
     return data.map((e) => Product.fromJson(e)).toList();
   }
+
+  Future<void> addProduct(Product product) async {
+  final response = await http.post(
+    Uri.parse("$baseUrl/api/products"),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: jsonEncode(product.toJson()),
+  );
+
+  if (response.statusCode == 201) {
+    print("Product added successfully");
+  } else {
+    print("Failed: ${response.body}");
+    throw Exception("Product not added");
+  }
+}
+
 }

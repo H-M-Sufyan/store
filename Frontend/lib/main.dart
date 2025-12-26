@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:store/firebase_options.dart';
+import 'package:store/screens/admin_screens/admin_dashboard_screen.dart';
 import 'package:store/screens/auth_screens/login_screen.dart';
 import 'package:store/screens/auth_screens/signup_screen.dart';
 import 'package:store/screens/auth_screens/splash_screen.dart';
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: HomeScreen(),
+      home: AdminDashboardScreen(),
     );
   }
 }

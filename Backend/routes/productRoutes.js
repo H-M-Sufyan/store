@@ -33,7 +33,7 @@ router.get("/new-arrivals", async (req, res) => {
   res.json(products);
 });
 
-// ADD product (testing only)
+// ADD product
 router.post("/", async (req, res) => {
   try {
     const product = new Product(req.body);
@@ -43,5 +43,6 @@ router.post("/", async (req, res) => {
     res.status(400).json({ message: "Product not saved" });
   }
 });
+
 
 module.exports = router;
