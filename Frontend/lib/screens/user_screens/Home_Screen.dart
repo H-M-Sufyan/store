@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:store/constants/colors.dart';
+import 'package:store/controllers/product_controller.dart';
 import 'package:store/models/category_model.dart';
 import 'package:store/models/featured_model.dart';
+import 'package:store/screens/user_screens/all_product_screen.dart';
 import 'package:store/widgets/banner_widget.dart';
 import 'package:store/widgets/categories_section.dart';
 import 'package:store/widgets/drawer_widget.dart';
 import 'package:store/widgets/featured_section.dart';
 import 'package:store/widgets/searchbar.dart';
+
+import '../../widgets/product_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,6 +21,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final ProductController productController = Get.put(ProductController());
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
@@ -46,26 +52,26 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   // Featured Product List
-  final featuredProducts = [
-    FeaturedModel(
-      imageUrl: 'assets/images/product1.png',
-      name: 'Product One',
-      price: '\$25',
-      rating: 4.0,
-    ),
-    FeaturedModel(
-      imageUrl: 'assets/images/product2.png',
-      name: 'Product Two',
-      price: '\$40',
-      rating: 5.0,
-    ),
-    FeaturedModel(
-      imageUrl: 'assets/images/product3.png',
-      name: 'Product Three',
-      price: '\$15',
-      rating: 3.5,
-    ),
-  ];
+  // final featuredProducts = [
+  //   FeaturedModel(
+  //     imageUrl: 'assets/images/product1.png',
+  //     name: 'Product One',
+  //     price: '\$25',
+  //     rating: 4.0,
+  //   ),
+  //   FeaturedModel(
+  //     imageUrl: 'assets/images/product2.png',
+  //     name: 'Product Two',
+  //     price: '\$40',
+  //     rating: 5.0,
+  //   ),
+  //   FeaturedModel(
+  //     imageUrl: 'assets/images/product3.png',
+  //     name: 'Product Three',
+  //     price: '\$15',
+  //     rating: 3.5,
+  //   ),
+  // ];
 
   @override
   Widget build(BuildContext context) {
@@ -138,18 +144,40 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Get.to(() => AllProductScreen());
+                      },
                       child: Text(
                         'See All',
                         style: TextStyle(
-                          color: AppColors.PrimColor,
+                          color: AppColors.SecColor,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
                   ],
                 ),
-                FeaturedSection(featuredList: featuredProducts),
+                SizedBox(height: 6),
+                Obx(() {
+                  if (productController.featuredProducts.isEmpty) {
+                    return SizedBox.shrink();
+                  }
+
+                  return SizedBox(
+                    height: 238,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: productController.featuredProducts.length,
+                      itemBuilder: (context, index) {
+                        final product =
+                            productController.featuredProducts[index];
+
+                        return ProductCard(product: product);
+                      },
+                    ),
+                  );
+                }),
+
                 SizedBox(height: 16),
 
                 // Promotional Green Container
@@ -198,7 +226,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       Image.asset(
-                        'assets/images/product2.png',
+                        'assets/images/pr2.png',
                         width: 120,
                         height: 120,
                         fit: BoxFit.cover,
@@ -208,7 +236,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 SizedBox(height: 16),
 
-                // Best Sellers
+                // // Best Sellers
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -224,17 +252,35 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Text(
                         'See All',
                         style: TextStyle(
-                          color: AppColors.PrimColor,
+                          color: AppColors.SecColor,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
                   ],
                 ),
-                FeaturedSection(featuredList: featuredProducts),
+                SizedBox(height: 6),
+                Obx(() {
+                  if (productController.bestSellers.isEmpty) {
+                    return SizedBox.shrink();
+                  }
+
+                  return SizedBox(
+                    height: 238,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: productController.bestSellers.length,
+                      itemBuilder: (context, index) {
+                        final product = productController.bestSellers[index];
+
+                        return ProductCard(product: product);
+                      },
+                    ),
+                  );
+                }),
                 SizedBox(height: 16),
 
-                // Promotional Blue Container
+                // // Promotional Blue Container
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
@@ -280,7 +326,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       Image.asset(
-                        'assets/images/product1.png',
+                        'assets/images/pr3.png',
                         width: 120,
                         height: 120,
                         fit: BoxFit.cover,
@@ -290,7 +336,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 SizedBox(height: 16),
 
-                // New Arrivals
+                // // New Arrivals
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -306,17 +352,35 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Text(
                         'See All',
                         style: TextStyle(
-                          color: AppColors.PrimColor,
+                          color: AppColors.SecColor,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
                   ],
                 ),
-                FeaturedSection(featuredList: featuredProducts),
+                SizedBox(height: 6),
+                Obx(() {
+                  if (productController.newArrivals.isEmpty) {
+                    return SizedBox.shrink();
+                  }
+
+                  return SizedBox(
+                    height: 238,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: productController.newArrivals.length,
+                      itemBuilder: (context, index) {
+                        final product = productController.newArrivals[index];
+
+                        return ProductCard(product: product);
+                      },
+                    ),
+                  );
+                }),
                 SizedBox(height: 16),
 
-                // Top Rated Products
+                // // Top Rated Products
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -332,15 +396,76 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Text(
                         'See All',
                         style: TextStyle(
-                          color: AppColors.PrimColor,
+                          color: AppColors.SecColor,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
                   ],
                 ),
-                FeaturedSection(featuredList: featuredProducts),
+                SizedBox(height: 6),
+                Obx(() {
+                  if (productController.topRated.isEmpty) {
+                    return SizedBox.shrink();
+                  }
+
+                  return SizedBox(
+                    height: 238,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: productController.topRated.length,
+                      itemBuilder: (context, index) {
+                        final product = productController.topRated[index];
+
+                        return ProductCard(product: product);
+                      },
+                    ),
+                  );
+                }),
                 SizedBox(height: 16),
+
+                // special Offers
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "special Offers",
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {},
+                      child: Text(
+                        'See All',
+                        style: TextStyle(
+                          color: AppColors.SecColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 6),
+                Obx(() {
+                  if (productController.specialOffers.isEmpty) {
+                    return SizedBox.shrink();
+                  }
+
+                  return SizedBox(
+                    height: 238,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: productController.specialOffers.length,
+                      itemBuilder: (context, index) {
+                        final product = productController.specialOffers[index];
+
+                        return ProductCard(product: product);
+                      },
+                    ),
+                  );
+                }),
               ],
             ),
           ),
